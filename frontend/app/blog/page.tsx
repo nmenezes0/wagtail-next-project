@@ -1,24 +1,28 @@
-export default async function BlogIndex() {
-    const posts = [
+interface BlogPage {
+    id: number;
+    meta: {
+      type: string;
+      slug: string;
+      first_published_at: string;
+    };
+    title: string;
+    intro: string;
+  }
+  
+  export default async function BlogIndex() {
+    const data = await fetch(
+      `http://127.0.0.1:8000/api/v2/pages/?${new URLSearchParams({
+        type: "blog.BlogPage",
+        fields: "intro",
+      })}`,
       {
-        id: 1,
-        title: "First post",
-        intro: "This is the first post",
-        meta: {
-          slug: "first-post",
-          first_published_at: "2022-01-011T09:00:00Z",
+        headers: {
+          Accept: "application/json",
         },
-      },
-      {
-        id: 2,
-        title: "Second post",
-        intro: "This is the second post",
-        meta: {
-          slug: "first-post",
-          first_published_at: "2021-01-011T09:00:00Z",
-        },
-      },
-    ];
+      }
+    ).then((response) => response.json());
+  
+    const posts: BlogPage[] = data.items;
   
     return (
       <main>
