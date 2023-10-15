@@ -4,12 +4,15 @@ from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel
 from wagtail.search import index
+from wagtail.api import APIField
 
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
-
     content_panels = Page.content_panels + [FieldPanel("intro")]
+    api_fields = [
+        APIField("intro"),
+    ]
 
 
 class BlogPage(Page):
@@ -19,12 +22,17 @@ class BlogPage(Page):
     body = RichTextField(blank=True)
 
     search_fields = Page.search_fields + [
-        index.SearchField('intro'),
-        index.SearchField('body'),
+        index.SearchField("intro"),
+        index.SearchField("body"),
     ]
 
     content_panels = Page.content_panels + [
-        FieldPanel('date'),
-        FieldPanel('intro'),
-        FieldPanel('body'),
+        FieldPanel("date"),
+        FieldPanel("intro"),
+        FieldPanel("body"),
+    ]
+
+    api_fields = [
+        APIField("intro"),
+        APIField("body"),
     ]
